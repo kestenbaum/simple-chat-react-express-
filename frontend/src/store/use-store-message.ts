@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { chatService } from "../../api/chat/services";
 
 type Message = {
     id: number;
@@ -32,14 +33,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         });
 
         try {
-            const response = await fetch('http://localhost:5000/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text })
-            });
-
-            const data = await response.json();
-
+            const data = await chatService.sendMessage(text);
             set((state) => ({
                 messages: [
                     ...state.messages,
@@ -53,9 +47,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
                 isLoading: false
             }));
 
-        } catch (error) {
-            console.error(error);
+        } catch (error: unknown) {
             set({ isLoading: false });
+            console.error("Error sending:", error);
         }
     },
 }));
