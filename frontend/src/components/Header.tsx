@@ -11,10 +11,6 @@ const Header = () => {
                     >
                         Simple Chat
                     </Link>
-
-                    <nav className="hidden md:flex gap-4">
-                        <Link to="#" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Sign In</Link>
-                    </nav>
                 </div>
             </div>
         </header>

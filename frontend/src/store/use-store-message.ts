@@ -9,26 +9,53 @@ type Message = {
 
 interface ChatStore {
     messages: Message[];
-    sendMessage: (text: string) => void;
-    clearChat: () => void;
+    isLoading: boolean;
+    sendMessage: (text: string) => Promise<void>;
 }
 
-export const useChatStore = create<ChatStore>((set) => ({
-    messages: [
-        { id: 1, text: "Hello", isMe: false, time: "10:00" },
-        { id: 2, text: "Hi", isMe: true, time: "10:05" },
-    ],
+export const useChatStore = create<ChatStore>((set, get) => ({
+    messages: [],
+    isLoading: false,
 
-    sendMessage: (text) => set((state) => ({
-        messages: [
-            ...state.messages,
-            {
-                id: Date.now(),
-                text: text,
-                isMe: true,
-                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-            }
-        ]
-    })),
-    clearChat: () => set({ messages: [] })
+    sendMessage: async (text: string) => {
+        const { messages } = get();
+        const userMsg = {
+            id: Date.now(),
+            text: text,
+            isMe: true,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+
+        set({
+            messages: [...messages, userMsg],
+            isLoading: true
+        });
+
+        try {
+            const response = await fetch('http://localhost:5000/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+
+            const data = await response.json();
+
+            set((state) => ({
+                messages: [
+                    ...state.messages,
+                    {
+                        id: Date.now() + 1,
+                        text: data.reply,
+                        isMe: false,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    }
+                ],
+                isLoading: false
+            }));
+
+        } catch (error) {
+            console.error(error);
+            set({ isLoading: false });
+        }
+    },
 }));

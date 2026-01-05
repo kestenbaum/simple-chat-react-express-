@@ -7,7 +7,7 @@ const MessageList = () => {
     return (
         <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
             {messages.map((msg) => (
-                <MessageBubble id={msg.id } isMe={msg.isMe} text={msg.text} time={msg.time} />
+                <MessageBubble key={msg.id} id={msg.id } isMe={msg.isMe} text={msg.text} time={msg.time} />
             ))}
         </div>
     );
