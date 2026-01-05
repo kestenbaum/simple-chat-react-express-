@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { chatService } from "../../api/chat/services";
+import { chatService, type ChatResponse } from "../../api/chat/services";
 
 type Message = {
     id: number;
@@ -33,7 +33,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         });
 
         try {
-            const data = await chatService.sendMessage(text);
+            const data: ChatResponse = await chatService.sendMessage(text);
             set((state) => ({
                 messages: [
                     ...state.messages,
