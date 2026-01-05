@@ -1,5 +1,6 @@
 import { type AxiosInstance } from "axios";
 import { apiInstance } from "../../index.ts";
+import { handleApiError } from "../../../utils/errors.ts";
 
 export interface ChatResponse {
     reply: string;
@@ -14,10 +15,12 @@ class ChatService {
 
     public async sendMessage(text: string): Promise<ChatResponse> {
         try {
-            const response = await this.axios.post<ChatResponse>('/api/chat', { message: text } as ChatRequest);
+            const response =
+                await this.axios.post<ChatResponse>('/api/chat', { message: text } as ChatRequest);
             return response.data;
         } catch (e: unknown) {
-            throw e instanceof Error ? e : new Error(String(e));
+            handleApiError(e);
+            throw e;
         }
     }
 }

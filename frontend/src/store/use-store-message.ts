@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { chatService, type ChatResponse } from "../api/chat/services";
+import { getErrorMessage } from "../utils/errors.ts";
 
 type Message = {
     id: number;
@@ -11,14 +12,17 @@ type Message = {
 interface ChatStore {
     messages: Message[];
     isLoading: boolean;
+    error: string | null;
     sendMessage: (text: string) => Promise<void>;
 }
 
 export const useChatStore = create<ChatStore>((set, get) => ({
     messages: [],
     isLoading: false,
+    error: null,
 
     sendMessage: async (text: string) => {
+        set({ isLoading: true, error: null });
         const { messages } = get();
         const userMsg = {
             id: Date.now(),
@@ -29,7 +33,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
         set({
             messages: [...messages, userMsg],
-            isLoading: true
+            isLoading: true,
         });
 
         try {
@@ -44,11 +48,12 @@ export const useChatStore = create<ChatStore>((set, get) => ({
                         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     }
                 ],
-                isLoading: false
+                isLoading: false,
             }));
 
         } catch (error: unknown) {
-            set({ isLoading: false });
+            const errorMessage = getErrorMessage(error);
+            set({ isLoading: false, error: errorMessage });
             console.error("Error sending:", error);
         }
     },
