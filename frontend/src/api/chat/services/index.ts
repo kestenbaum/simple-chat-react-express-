@@ -1,5 +1,5 @@
 import { type AxiosInstance } from "axios";
-import { apiInstance } from "../../index";
+import { apiInstance } from "../../index.ts";
 
 export interface ChatResponse {
     reply: string;

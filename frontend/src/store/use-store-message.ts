@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { chatService, type ChatResponse } from "../../api/chat/services";
+import { chatService, type ChatResponse } from "../api/chat/services";
 
 type Message = {
     id: number;
