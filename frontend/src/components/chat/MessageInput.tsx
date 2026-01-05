@@ -1,26 +1,22 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useChatStore } from "../../store/use-store-message.ts";
 
 const MessageInput = () => {
-    const [text, setText] = useState('');
-    const sendMessage = useChatStore((state) => state.sendMessage);
-    const isLoading = useChatStore((state) => state.isLoading);
-    const handleSend = () => {
+    const [text, setText] = useState<string>('');
+    const { sendMessage, isLoading } = useChatStore();
+
+    async function handleSendMessage() {
         if (!text.trim() || isLoading) return;
-        sendMessage(text);
+        await sendMessage(text);
         setText('');
-    };
+    }
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (e.nativeEvent.isComposing) {
-            return;
-        }
-
+    async  function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>){
         if (e.key === 'Enter') {
             e.preventDefault();
-            handleSend();
+            await handleSendMessage()
         }
-    };
+    }
 
     return (
         <div className="p-4 border-t border-white/10 bg-slate-900/40">
@@ -35,7 +31,7 @@ const MessageInput = () => {
                     className="flex-1 bg-transparent text-white placeholder-slate-500 text-sm focus:outline-none px-2 disabled:cursor-not-allowed"
                 />
                 <button
-                    onClick={handleSend}
+                    onClick={handleSendMessage}
                     disabled={isLoading || !text.trim()}
                     className={`p-2 rounded-lg transition-colors text-white ${
                         isLoading || !text.trim()
