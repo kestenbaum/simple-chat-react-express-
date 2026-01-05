@@ -12,6 +12,7 @@ A modern, real-time chat application powered by OpenAI's GPT models. Built with 
 * Dotenv
 * React-router-dom
 * CI
+* Axios
 
 Install
 ```Bash
