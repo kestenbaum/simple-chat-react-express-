@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { chatService, type ChatResponse } from "../api/chat/services";
 import { getErrorMessage } from "../utils/errors.ts";
+import { formatMessageTime } from "../utils/date.ts";
 
 type Message = {
-    id: number;
+    id: string;
     text: string;
     isMe: boolean;
     time: string;
@@ -22,10 +23,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     error: null,
 
     sendMessage: async (text: string) => {
-        set({ isLoading: true, error: null });
         const { messages } = get();
         const userMsg = {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             text: text,
             isMe: true,
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -34,6 +34,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         set({
             messages: [...messages, userMsg],
             isLoading: true,
+            error: null,
         });
 
         try {
@@ -42,10 +43,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
                 messages: [
                     ...state.messages,
                     {
-                        id: Date.now() + 1,
+                        id: crypto.randomUUID(),
                         text: data.reply,
                         isMe: false,
-                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                        time: formatMessageTime()
                     }
                 ],
                 isLoading: false,
