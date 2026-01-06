@@ -1,4 +1,3 @@
-
 const ChatHeader = () => {
     return (
         <div className="h-16 border-b border-white/10 flex items-center px-6 justify-between bg-slate-900/20">

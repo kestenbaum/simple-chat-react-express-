@@ -1,7 +1,7 @@
 import { type AxiosInstance } from "axios";
-import { apiInstance } from "../../index.ts";
-import { handleApiError } from "../../../utils/errors.ts";
-import { getSessionId } from "../../../utils/session.ts";
+import { apiInstance } from "@/api";
+import { handleApiError } from "@/utils/errors";
+import { getSessionId } from "@/utils/session";
 
 export interface ChatResponse {
     reply: string;

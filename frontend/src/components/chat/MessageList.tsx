@@ -1,5 +1,5 @@
-import MessageBubble from "./MessageBubble.tsx";
-import { useChatStore } from "../../store/use-store-message.ts";
+import MessageBubble from "./MessageBubble";
+import { useChatStore } from "@/store/use-store-message";
 
 const MessageList = () => {
     const { messages } = useChatStore();

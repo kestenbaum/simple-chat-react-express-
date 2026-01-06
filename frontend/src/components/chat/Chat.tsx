@@ -1,7 +1,7 @@
-import ChatSidebar from "./ChatSidebar.tsx";
-import MessageList from "./MessageList.tsx";
-import ChatHeader from "./ChatHeader.tsx";
-import MessageInput from "./MessageInput.tsx";
+import ChatSidebar from "./ChatSidebar";
+import MessageList from "./MessageList";
+import ChatHeader from "./ChatHeader";
+import MessageInput from "./MessageInput";
 
 const Chat = () => {
     return (

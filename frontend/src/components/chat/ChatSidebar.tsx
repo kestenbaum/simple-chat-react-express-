@@ -1,4 +1,3 @@
-
 const ChatSidebar = () => {
     return (
         <div className="w-80 border-r border-white/10 hidden md:flex flex-col bg-slate-900/40">

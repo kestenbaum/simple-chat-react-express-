@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { chatService, type ChatResponse } from "../api/chat/services";
-import { getErrorMessage } from "../utils/errors.ts";
-import { formatMessageTime } from "../utils/date.ts";
+import { chatService, type ChatResponse } from "@/api/chat/services";
+import { getErrorMessage } from "@/utils/errors";
+import { formatMessageTime } from "@/utils/date";
 
 type Message = {
     id: string;
