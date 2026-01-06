@@ -11,7 +11,7 @@ const MessageInput = () => {
         setText('');
     }
 
-    async  function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>){
+    async function handleKeyDown (e: React.KeyboardEvent<HTMLInputElement>){
         if (e.key === 'Enter') {
             e.preventDefault();
             await handleSendMessage()
