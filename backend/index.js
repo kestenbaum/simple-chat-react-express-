@@ -15,19 +15,30 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+const sessions = {};
 app.post('/api/chat', async (req, res) => {
 		try {
-				const { message } = req.body;
+				const { message, sessionId } = req.body;
+				
+				if (!sessions[sessionId]) {
+						sessions[sessionId] = [
+								{
+										role: "system",
+										content: "You bot, saving info chat."
+								}
+						]
+				}
+				sessions[sessionId].push({ role: "user", content: message });
+				
 				const completion = await openai.chat.completions.create({
-						messages: [
-								{ role: "system", content: "Bot" },
-								{ role: "user", content: message }
-						],
+						messages: sessions[sessionId],
 						model: "gpt-3.5-turbo",
 				});
 				
-				const botResponse = completion.choices[0].message.content;
-				res.json({ reply: botResponse });
+				const botMessage = completion.choices[0].message;
+				sessions[sessionId].push(botMessage);
+				
+				res.json({ reply: botMessage.content });
 				
 		} catch (error) {
 				console.error("error OpenAI:", error);

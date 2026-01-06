@@ -28,7 +28,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
             id: crypto.randomUUID(),
             text: text,
             isMe: true,
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            time: formatMessageTime()
         };
 
         set({

@@ -1,6 +1,7 @@
 import { type AxiosInstance } from "axios";
 import { apiInstance } from "../../index.ts";
 import { handleApiError } from "../../../utils/errors.ts";
+import { getSessionId } from "../../../utils/session.ts";
 
 export interface ChatResponse {
     reply: string;
@@ -8,15 +9,21 @@ export interface ChatResponse {
 
 interface ChatRequest {
     message: string;
+    sessionId: string;
 }
 
 class ChatService {
     private axios: AxiosInstance = apiInstance;
 
     public async sendMessage(text: string): Promise<ChatResponse> {
+        const sessionId: string = getSessionId();
+
         try {
             const response =
-                await this.axios.post<ChatResponse>('/api/chat', { message: text } as ChatRequest);
+                await this.axios.post<ChatResponse>('/api/chat', {
+                    message: text,
+                    sessionId,
+                } as ChatRequest);
             return response.data;
         } catch (e: unknown) {
             handleApiError(e);
